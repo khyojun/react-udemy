@@ -1,5 +1,13 @@
-export default function FirstComponent() {
+
+import { Component } from "react"
+
+export default class ForthComponent extends Component{
+
+  render(){
     return (
-      <div className="FirstComponent">First Component</div>
+      <div className='ForthComponent'>Forth Component</div>
     )
   }
+
+
+}
