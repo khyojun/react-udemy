@@ -1,19 +1,49 @@
-export default function Counter() {
+
+import { useState} from 'react';
+import {PropTypes} from 'prop-types';
+import './Counter.css'
 
 
-    const buttonStyle = {
-        fontSize: "16px",
-        backgroundColor: "#00a5ab",
-        width: "100px",
-        margin: "10px",
-        color: "white",
-        padding: "15px",
-        borderRadius: "30px"
 
-    }; // 따로 빼내서 진행
+export default function Counter(){
+    
+    const [count, setCount] = useState(0)
+    
+    return (
+
+    
+        <>
+            <span className="totalCount">{count}</span>
+            <CounterButton by={1}/>
+            <CounterButton by={2}/>
+            <CounterButton by={5}/>
+        
+        </>
+
+
+    )
+}
+
+
+
+
+
+ function CounterButton({by}) {
+
+
+    const [count, setCount] = useState(0);
+
+    // useState를 사용하면 2개를 반환 state값, update할 함수
+    // 위 경우처럼 지정하면 state값이 -> count, update하는 함수 -> setCount가 된다.
 
     function incrementCounterFunction(){
-        console.log('increment clicked')
+        setCount(count + by)
+        console.log(count)
+    }
+
+    function decreaseCounterFunction(){
+        setCount(count - by)
+        console.log(count)
     }
 
 
@@ -21,16 +51,27 @@ export default function Counter() {
     // js에서는 style에 - 표시가 허가되지 않음.
     return (
         <div className="Counter">
-            <span className="count">0</span>
             <div>
                 <button className="counterButton" 
                 onClick={incrementCounterFunction}
-                style={buttonStyle}
-                >+1</button>
-                
+                >+{by}</button>
+                <button className="counterButton" 
+                onClick={decreaseCounterFunction}
+                >-{by}</button>
             </div>
+          
         </div>
 
 
     )
+}
+
+
+CounterButton.propTypes = {
+    by: PropTypes.number
+}
+
+
+CounterButton.defaultProps = {
+    by: 1
 }
