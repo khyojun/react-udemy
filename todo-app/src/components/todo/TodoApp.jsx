@@ -1,13 +1,64 @@
 import { useState } from 'react'
-import './TodoApp.css'
+import {BrowserRouter, Routes, Route,useNavigate, useParams, Link, Navigate} from 'react-router-dom' // 다른 페이지로 이동하기 위한 import
+
+import LogoutComponent from './LogoutComponent'
+import HeaderComponent from './HeaderComponent'
+import ListComponent from './ListComponent'
+import ErrorComponent from './ErrorComponent'
+import WelcomComponent from './WelcomeComponent'
+import LoginComponent from './LoginComponent'
+import AuthProvider, { useAuth } from './security/AuthContext'
+import './TodoApp.css' 
 
 
 
+function AuthenticatedRoute({children}){
+
+    const authContext = useAuth()
+    if(authContext.isAuthenticated){
+        return children
+    }
+    else{
+        return <Navigate to="/" />
+    }
+
+}
+
+// * 로 이상한 url 입력하면 errorComponent로
+// :~ 파라미터로 받음, useParams 를 통해 받음.
+// a 태그를 사용하지 않고 react router dom의 link를 통해 옮기면 네트워크 활동이 없다. 즉, 새로고침 없이 활동한 것이다. 
 export default function TodoApp() {
     return (
         <div className="TodoApp">
-            <LoginComponent />
-            {/* <WelcomComponent/> */}
+            <AuthProvider>
+                <BrowserRouter>
+                <HeaderComponent/>
+                    <Routes>
+                        <Route path='/' element={<LoginComponent/>}/>
+                        <Route path='/login' element={<LoginComponent/>}/>
+                        <Route path='*' element={<ErrorComponent/>}/> 
+                        <Route path='/logout' element={
+                        <AuthenticatedRoute>
+                            <LogoutComponent/>
+                        </AuthenticatedRoute>
+                        
+                        }/> 
+                        <Route path='/welcome/:username' element={
+                        <AuthenticatedRoute>
+                            <WelcomComponent/>
+                        </AuthenticatedRoute>
+                        }/>
+
+                        <Route path='/todos' element={
+                        <AuthenticatedRoute>
+                            <ListComponent/>
+                        </AuthenticatedRoute>
+                        
+                        }/> 
+
+                    </Routes>
+                </BrowserRouter>
+            </AuthProvider>
         </div>
 
     )
@@ -16,93 +67,22 @@ export default function TodoApp() {
 
 
 
-function LoginComponent() {
-
-
-    const [username, setUsername]=useState("khyojun")
-
-    const [password, setPassword] = useState('')
- 
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-
-    const [showErrorMessage, setShowErrorMessage] = useState(false)
-
-
-    function handleUsernameChange(event){
-        setUsername(event.target.value)
-    }
-
-
-    function handlePasswordChange(event){
-        setPassword(event.target.value)
-    }
-
-
-    function handleSubmit() {
-
-
-        if(username==='khyojun' && password==="dummy"){
-            console.log("success")
-            setShowSuccessMessage(true)
-            setShowErrorMessage(false)
-        }
-        else{
-            console.log("Failed")
-            setShowErrorMessage(true)
-            setShowSuccessMessage(false)
-        }
-    }
-
-
-    function SuccessMessageComponent(){
-        if(showSuccessMessage){
-            return (
-                <div className='successMessage'>Authenticated Successfully</div>
-            )
-        }
-        return null
-    }
-
-    function ErrorMessageComponent(){
-        if(showErrorMessage){
-            return (
-                <div className='errorMessage'>Authenticated Failed. Please check your credentials.</div>
-
-            )
-        }
-        return null
-    }
-
-    return (
-        <div className="Login">
-            <SuccessMessageComponent/>
-            <ErrorMessageComponent/>
-            <div className="LoginForm">
-                <div>
-                    <label>Username</label>
-                    <input type="text" name='username' value={username} onChange={handleUsernameChange}></input>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" name='password' value={password} onChange={handlePasswordChange}></input>
-                </div>
-                <div>
-                    <button type="button" name="login" onClick={handleSubmit}>Login</button>
-                </div>
-            </div>
-            
-        </div>
-    )
-}
 
 
 
 
 
-function WelcomComponent() {
-    return (
-        <div className="Welcome">
-            Welcome Component
-        </div>
-    )
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

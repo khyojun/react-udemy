@@ -42,11 +42,3 @@ export default function Counter(){
 }
  
 
-CounterButton.propTypes = {
-    by: PropTypes.number
-}
-
-
-CounterButton.defaultProps = {
-    by: 1
-}

@@ -97,3 +97,11 @@ react -> js에서 많이 쓰는 라이브러리라고 함.
 
 - 하나의 컴포넌트 여러개의 프로퍼티 가질 수 있음.
 - 이 값은 다른 컴포넌트와 공유할 수 잇음.
+
+
+### 리액트 라우터 돔
+
+- import {BrowserRouter, Routes, Route,useNavigate, useParams, Link} from 'react-router-dom' // 다른 페이지로 이동하기 위한 import
+- react 에서 route 사용해서 url에 따라 보여질 컴포넌트 지정 
+- :~ 파라미터로 받음, useParams 를 통해 받음.
+-  a 태그를 사용하지 않고 react router dom의 link를 통해 옮기면 네트워크 활동이 없다. 즉, 새로고침 없이 활동한 것이다. 
