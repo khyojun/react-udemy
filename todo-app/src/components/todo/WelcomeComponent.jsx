@@ -1,12 +1,14 @@
 import {useParams, Link} from 'react-router-dom' // 다른 페이지로 이동하기 위한 import
 import { useState } from 'react'
 import { retrieveHelloWorldBean, retrieveHelloWorldBeanPathVariable } from './api/HelloWorldApiService'
+import { useAuth } from './security/AuthContext'
 
 function WelcomComponent() {
 
     const {username} = useParams() // username 에 매칭된 것을 자동으로 username에 넣음.
 
 
+    const authContext = useAuth()
 
 
     const [message, setMessage] = useState(null)
@@ -14,7 +16,7 @@ function WelcomComponent() {
     
     function callHelloWorldRestApi(){
    
-        retrieveHelloWorldBeanPathVariable('khyojun')
+        retrieveHelloWorldBeanPathVariable('khyojun', authContext.token)
             .then((response) => successfulResponse(response))
             .catch((error) => errorResponse(error))
             .finally(() => console.log('clean up'))
